@@ -1,0 +1,48 @@
+{
+  "name": "JobHistory",
+  "fields": [
+    {
+      "fieldName": "startDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "salary",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "jobHistories",
+      "relationshipName": "employee"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "job",
+      "otherEntityRelationshipName": "jobHistories",
+      "relationshipName": "job"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "jobHistories",
+      "relationshipName": "department"
+    }
+  ],
+  "entityTableName": "job_history",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["employee", "gateway"],
+  "databaseType": "sql",
+  "changelogDate": "20230519095028"
+}

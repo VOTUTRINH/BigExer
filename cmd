@@ -1,0 +1,1 @@
+docker-compose -f src/main/docker/jhipster-registry.yml up -d

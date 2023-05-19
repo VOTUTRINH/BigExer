@@ -1,0 +1,42 @@
+{
+  "name": "Job",
+  "fields": [
+    {
+      "fieldName": "jobTitle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "minSalary",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "maxSalary",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "job",
+      "relationshipName": "employees"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobHistory",
+      "otherEntityRelationshipName": "job",
+      "relationshipName": "jobHistories"
+    }
+  ],
+  "entityTableName": "job",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["employee", "gateway"],
+  "databaseType": "sql",
+  "changelogDate": "20230519094928"
+}

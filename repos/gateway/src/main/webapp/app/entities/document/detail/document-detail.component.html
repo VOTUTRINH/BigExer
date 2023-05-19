@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="document">
+      <h2 data-cy="documentDetailsHeading"><span jhiTranslate="gatewayApp.document.detail.title">Document</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ document.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.document.documentName">Document Name</span></dt>
+        <dd>
+          <span>{{ document.documentName }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.document.employeeId">Employee Id</span></dt>
+        <dd>
+          <span>{{ document.employeeId }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.document.documentType">Document Type</span></dt>
+        <dd>
+          <div *ngIf="document.documentType">
+            <a [routerLink]="['/document-type', document.documentType?.id, 'view']">{{ document.documentType?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/document', document.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+{
+  "name": "Region",
+  "fields": [
+    {
+      "fieldName": "regionName",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "country",
+      "otherEntityRelationshipName": "region",
+      "relationshipName": "countries"
+    }
+  ],
+  "entityTableName": "region",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["employee", "gateway"],
+  "microserviceName": "employee",
+  "clientRootFolder": "employee",
+  "databaseType": "sql",
+  "changelogDate": "20230519094728"
+}

@@ -1,0 +1,132 @@
+application {
+  config {
+    baseName employee
+    applicationType microservice
+    packageName com.leap.training.employee
+    serviceDiscoveryType eureka
+    authenticationType jwt
+    prodDatabaseType oracle
+    devDatabaseType h2Disk
+    buildTool maven
+    serverPort 8081
+    skipUserManagement true
+    skipClient true
+  }
+  entities Employee, Job, JobHistory, Department, Location, Country, Region
+}
+
+
+
+
+application{
+	config{
+    	baseName document
+        applicationType microservice
+        packageName com.leap.training.document
+        serviceDiscoveryType eureka
+        authenticationType jwt
+        prodDatabaseType oracle
+        devDatabaseType h2Disk
+        buildTool maven
+        serverPort 8082
+        skipUserManagement true
+        skipClient true
+    }
+    entities Document, DocumentType
+}
+
+application {
+  config {
+    baseName gateway
+    applicationType gateway
+    packageName com.leap.training.gateway
+    serviceDiscoveryType eureka
+    authenticationType jwt
+    devDatabaseType h2Disk
+    prodDatabaseType oracle
+    buildTool maven
+    serverPort 8080
+    clientFramework angular
+    testFrameworks [cypress]
+    skipUserManagement false
+  }
+  entities *
+  
+}
+
+paginate * with pagination
+service * with serviceClass
+
+entity Employee {
+  
+  FirstName String
+  LastName String
+  Email String
+  PhoneNumber String
+  HireDate Instant
+  Salary Long
+  CommissionPct Long
+}
+
+entity Job {
+  
+  JobTitle String
+  MinSalary Long
+  MaxSalary Long
+}
+
+
+entity JobHistory {
+  
+  StartDate Instant
+  EndDate Instant
+  Salary Long
+}
+
+entity Department {
+
+  DepartmentName String
+}
+
+entity Location {
+  
+  StreetAddress String
+  PostalCode String
+  City String
+  StateProvince String
+}
+
+entity Country {
+  CountryName String
+}
+
+entity Region {
+  
+  RegionName String
+}
+
+entity Document{
+    DocumentName String
+    EmployeeId Long
+}
+entity DocumentType{
+	Description String
+}
+relationship OneToMany {
+  Job{Employees} to Employee{Job}
+  Employee{SubEmployees} to Employee{Manager}
+  Department{Employees} to Employee{Department}
+
+  Employee{JobHistories} to JobHistory{Employee}
+  Job{JobHistories} to JobHistory{Job}
+  Department{JobHistories} to JobHistory{Department}
+
+  Employee{ManagedDepartments} to Department{Manager}
+  Location{Departments} to Department{Location}
+
+  Country{Locations} to Location{Country}
+  
+  Region{Countries} to Country{Region}
+    
+  DocumentType{Documents} to Document{DocumentType}
+}

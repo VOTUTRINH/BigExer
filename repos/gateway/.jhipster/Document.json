@@ -1,0 +1,32 @@
+{
+  "name": "Document",
+  "fields": [
+    {
+      "fieldName": "documentName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "employeeId",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "documentType",
+      "otherEntityRelationshipName": "documents",
+      "relationshipName": "documentType"
+    }
+  ],
+  "entityTableName": "document",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["document", "gateway"],
+  "databaseType": "sql",
+  "changelogDate": "20230519095128"
+}

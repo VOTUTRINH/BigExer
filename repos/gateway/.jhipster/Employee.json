@@ -1,0 +1,82 @@
+{
+  "name": "Employee",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "hireDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "salary",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "commissionPct",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "manager",
+      "relationshipName": "subEmployees"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobHistory",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "jobHistories"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "manager",
+      "relationshipName": "managedDepartments"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "job",
+      "otherEntityRelationshipName": "employees",
+      "relationshipName": "job"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "subEmployees",
+      "relationshipName": "manager"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "employees",
+      "relationshipName": "department"
+    }
+  ],
+  "entityTableName": "employee",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["employee", "gateway"],
+  "databaseType": "sql",
+  "changelogDate": "20230519095228"
+}

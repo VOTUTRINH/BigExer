@@ -1,0 +1,30 @@
+{
+  "name": "DocumentType",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "document",
+      "otherEntityRelationshipName": "documentType",
+      "relationshipName": "documents"
+    }
+  ],
+  "entityTableName": "document_type",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["document", "gateway"],
+  "microserviceName": "document",
+  "clientRootFolder": "document",
+  "databaseType": "sql",
+  "changelogDate": "20230519094528"
+}
