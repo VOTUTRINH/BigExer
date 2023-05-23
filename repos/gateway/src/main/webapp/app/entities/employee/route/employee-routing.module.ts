@@ -43,7 +43,7 @@ const employeeRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/edocument',
+    path: ':id/document',
     component: DocumentComponent,
     data: {
       defaultSort: 'id,asc',

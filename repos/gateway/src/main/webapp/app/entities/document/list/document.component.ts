@@ -23,7 +23,7 @@ export class DocumentComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-  id = 0;
+  eid = 0;
 
   constructor(
     protected documentService: DocumentService,
@@ -36,7 +36,7 @@ export class DocumentComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.documentService.findByIdEmployee(this.id, { page: pageToLoad - 1, size: this.itemsPerPage, sort: this.sort() }).subscribe(
+    this.documentService.findByIdEmployee(this.eid, { page: pageToLoad - 1, size: this.itemsPerPage, sort: this.sort() }).subscribe(
       (res: HttpResponse<IDocument[]>) => {
         this.isLoading = false;
         this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
@@ -50,7 +50,7 @@ export class DocumentComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      this.id = +params['id'];
+      this.eid = +params['id'];
     });
 
     this.handleNavigation();
@@ -98,7 +98,7 @@ export class DocumentComponent implements OnInit {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/document'], {
+      this.router.navigate(['/employee', this.eid, 'document'], {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,
