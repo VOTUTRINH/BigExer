@@ -156,12 +156,12 @@ public class DocumentResource {
      * @param id the id of the document to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the document, or with status {@code 404 (Not Found)}.
      */
-    // @GetMapping("/documents/{id}")
-    // public ResponseEntity<Document> getDocument(@PathVariable Long id) {
-    //     log.debug("REST request to get Document : {}", id);
-    //     Optional<Document> document = documentService.findOne(id);
-    //     return ResponseUtil.wrapOrNotFound(document);
-    // }
+    @GetMapping("/documents/{id}")
+    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
+        log.debug("REST request to get Document : {}", id);
+        Optional<Document> document = documentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(document);
+    }
 
     @GetMapping("/documents/edocument/{id}")
     public ResponseEntity<List<Document>> getEDocument(Pageable pageable, @PathVariable Long id) {
