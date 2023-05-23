@@ -7,6 +7,8 @@ import { EmployeeDetailComponent } from '../detail/employee-detail.component';
 import { EmployeeUpdateComponent } from '../update/employee-update.component';
 import { EmployeeRoutingResolveService } from './employee-routing-resolve.service';
 
+import { DocumentComponent } from '../../document/list/document.component';
+
 const employeeRoute: Routes = [
   {
     path: '',
@@ -37,6 +39,14 @@ const employeeRoute: Routes = [
     component: EmployeeUpdateComponent,
     resolve: {
       employee: EmployeeRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/edocument',
+    component: DocumentComponent,
+    data: {
+      defaultSort: 'id,asc',
     },
     canActivate: [UserRouteAccessService],
   },

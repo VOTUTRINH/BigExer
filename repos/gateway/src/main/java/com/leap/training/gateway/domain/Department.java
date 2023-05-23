@@ -18,7 +18,6 @@ public class Department implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("department_name")
@@ -35,36 +34,35 @@ public class Department implements Serializable {
     @JsonIgnoreProperties(value = { "employee", "job", "department" }, allowSetters = true)
     private Set<JobHistory> jobHistories = new HashSet<>();
 
-    @Transient
     @JsonIgnoreProperties(
         value = { "subEmployees", "jobHistories", "managedDepartments", "job", "manager", "department" },
         allowSetters = true
     )
-    private Employee manager;
-
     @Transient
-    @JsonIgnoreProperties(value = { "departments", "country" }, allowSetters = true)
-    private Location location;
+    private Employee manager;
 
     @Column("manager_id")
     private Long managerId;
+
+    @JsonIgnoreProperties(value = { "departments", "country" }, allowSetters = true)
+    @Transient
+    private Location location;
 
     @Column("location_id")
     private Long locationId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Department id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Department id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getDepartmentName() {
@@ -72,7 +70,7 @@ public class Department implements Serializable {
     }
 
     public Department departmentName(String departmentName) {
-        this.setDepartmentName(departmentName);
+        this.departmentName = departmentName;
         return this;
     }
 
@@ -82,16 +80,6 @@ public class Department implements Serializable {
 
     public Set<Employee> getEmployees() {
         return this.employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        if (this.employees != null) {
-            this.employees.forEach(i -> i.setDepartment(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setDepartment(this));
-        }
-        this.employees = employees;
     }
 
     public Department employees(Set<Employee> employees) {
@@ -111,18 +99,18 @@ public class Department implements Serializable {
         return this;
     }
 
-    public Set<JobHistory> getJobHistories() {
-        return this.jobHistories;
+    public void setEmployees(Set<Employee> employees) {
+        if (this.employees != null) {
+            this.employees.forEach(i -> i.setDepartment(null));
+        }
+        if (employees != null) {
+            employees.forEach(i -> i.setDepartment(this));
+        }
+        this.employees = employees;
     }
 
-    public void setJobHistories(Set<JobHistory> jobHistories) {
-        if (this.jobHistories != null) {
-            this.jobHistories.forEach(i -> i.setDepartment(null));
-        }
-        if (jobHistories != null) {
-            jobHistories.forEach(i -> i.setDepartment(this));
-        }
-        this.jobHistories = jobHistories;
+    public Set<JobHistory> getJobHistories() {
+        return this.jobHistories;
     }
 
     public Department jobHistories(Set<JobHistory> jobHistories) {
@@ -142,32 +130,29 @@ public class Department implements Serializable {
         return this;
     }
 
+    public void setJobHistories(Set<JobHistory> jobHistories) {
+        if (this.jobHistories != null) {
+            this.jobHistories.forEach(i -> i.setDepartment(null));
+        }
+        if (jobHistories != null) {
+            jobHistories.forEach(i -> i.setDepartment(this));
+        }
+        this.jobHistories = jobHistories;
+    }
+
     public Employee getManager() {
         return this.manager;
+    }
+
+    public Department manager(Employee employee) {
+        this.setManager(employee);
+        this.managerId = employee != null ? employee.getId() : null;
+        return this;
     }
 
     public void setManager(Employee employee) {
         this.manager = employee;
         this.managerId = employee != null ? employee.getId() : null;
-    }
-
-    public Department manager(Employee employee) {
-        this.setManager(employee);
-        return this;
-    }
-
-    public Location getLocation() {
-        return this.location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-        this.locationId = location != null ? location.getId() : null;
-    }
-
-    public Department location(Location location) {
-        this.setLocation(location);
-        return this;
     }
 
     public Long getManagerId() {
@@ -176,6 +161,21 @@ public class Department implements Serializable {
 
     public void setManagerId(Long employee) {
         this.managerId = employee;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public Department location(Location location) {
+        this.setLocation(location);
+        this.locationId = location != null ? location.getId() : null;
+        return this;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+        this.locationId = location != null ? location.getId() : null;
     }
 
     public Long getLocationId() {

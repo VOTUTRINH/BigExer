@@ -22,7 +22,6 @@ public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "first_name")
@@ -80,18 +79,17 @@ public class Employee implements Serializable {
     private Department department;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Employee id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Employee id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getFirstName() {
@@ -99,7 +97,7 @@ public class Employee implements Serializable {
     }
 
     public Employee firstName(String firstName) {
-        this.setFirstName(firstName);
+        this.firstName = firstName;
         return this;
     }
 
@@ -112,7 +110,7 @@ public class Employee implements Serializable {
     }
 
     public Employee lastName(String lastName) {
-        this.setLastName(lastName);
+        this.lastName = lastName;
         return this;
     }
 
@@ -125,7 +123,7 @@ public class Employee implements Serializable {
     }
 
     public Employee email(String email) {
-        this.setEmail(email);
+        this.email = email;
         return this;
     }
 
@@ -138,7 +136,7 @@ public class Employee implements Serializable {
     }
 
     public Employee phoneNumber(String phoneNumber) {
-        this.setPhoneNumber(phoneNumber);
+        this.phoneNumber = phoneNumber;
         return this;
     }
 
@@ -151,7 +149,7 @@ public class Employee implements Serializable {
     }
 
     public Employee hireDate(Instant hireDate) {
-        this.setHireDate(hireDate);
+        this.hireDate = hireDate;
         return this;
     }
 
@@ -164,7 +162,7 @@ public class Employee implements Serializable {
     }
 
     public Employee salary(Long salary) {
-        this.setSalary(salary);
+        this.salary = salary;
         return this;
     }
 
@@ -177,7 +175,7 @@ public class Employee implements Serializable {
     }
 
     public Employee commissionPct(Long commissionPct) {
-        this.setCommissionPct(commissionPct);
+        this.commissionPct = commissionPct;
         return this;
     }
 
@@ -187,16 +185,6 @@ public class Employee implements Serializable {
 
     public Set<Employee> getSubEmployees() {
         return this.subEmployees;
-    }
-
-    public void setSubEmployees(Set<Employee> employees) {
-        if (this.subEmployees != null) {
-            this.subEmployees.forEach(i -> i.setManager(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setManager(this));
-        }
-        this.subEmployees = employees;
     }
 
     public Employee subEmployees(Set<Employee> employees) {
@@ -216,18 +204,18 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Set<JobHistory> getJobHistories() {
-        return this.jobHistories;
+    public void setSubEmployees(Set<Employee> employees) {
+        if (this.subEmployees != null) {
+            this.subEmployees.forEach(i -> i.setManager(null));
+        }
+        if (employees != null) {
+            employees.forEach(i -> i.setManager(this));
+        }
+        this.subEmployees = employees;
     }
 
-    public void setJobHistories(Set<JobHistory> jobHistories) {
-        if (this.jobHistories != null) {
-            this.jobHistories.forEach(i -> i.setEmployee(null));
-        }
-        if (jobHistories != null) {
-            jobHistories.forEach(i -> i.setEmployee(this));
-        }
-        this.jobHistories = jobHistories;
+    public Set<JobHistory> getJobHistories() {
+        return this.jobHistories;
     }
 
     public Employee jobHistories(Set<JobHistory> jobHistories) {
@@ -247,18 +235,18 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Set<Department> getManagedDepartments() {
-        return this.managedDepartments;
+    public void setJobHistories(Set<JobHistory> jobHistories) {
+        if (this.jobHistories != null) {
+            this.jobHistories.forEach(i -> i.setEmployee(null));
+        }
+        if (jobHistories != null) {
+            jobHistories.forEach(i -> i.setEmployee(this));
+        }
+        this.jobHistories = jobHistories;
     }
 
-    public void setManagedDepartments(Set<Department> departments) {
-        if (this.managedDepartments != null) {
-            this.managedDepartments.forEach(i -> i.setManager(null));
-        }
-        if (departments != null) {
-            departments.forEach(i -> i.setManager(this));
-        }
-        this.managedDepartments = departments;
+    public Set<Department> getManagedDepartments() {
+        return this.managedDepartments;
     }
 
     public Employee managedDepartments(Set<Department> departments) {
@@ -278,12 +266,18 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Job getJob() {
-        return this.job;
+    public void setManagedDepartments(Set<Department> departments) {
+        if (this.managedDepartments != null) {
+            this.managedDepartments.forEach(i -> i.setManager(null));
+        }
+        if (departments != null) {
+            departments.forEach(i -> i.setManager(this));
+        }
+        this.managedDepartments = departments;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public Job getJob() {
+        return this.job;
     }
 
     public Employee job(Job job) {
@@ -291,12 +285,12 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Employee getManager() {
-        return this.manager;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
-    public void setManager(Employee employee) {
-        this.manager = employee;
+    public Employee getManager() {
+        return this.manager;
     }
 
     public Employee manager(Employee employee) {
@@ -304,17 +298,21 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Department getDepartment() {
-        return this.department;
+    public void setManager(Employee employee) {
+        this.manager = employee;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public Department getDepartment() {
+        return this.department;
     }
 
     public Employee department(Department department) {
         this.setDepartment(department);
         return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

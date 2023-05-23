@@ -2,10 +2,15 @@ package com.leap.training.document.service;
 
 import com.leap.training.document.domain.Document;
 import com.leap.training.document.repository.DocumentRepository;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,16 +52,18 @@ public class DocumentService {
 
         return documentRepository
             .findById(document.getId())
-            .map(existingDocument -> {
-                if (document.getDocumentName() != null) {
-                    existingDocument.setDocumentName(document.getDocumentName());
-                }
-                if (document.getEmployeeId() != null) {
-                    existingDocument.setEmployeeId(document.getEmployeeId());
-                }
+            .map(
+                existingDocument -> {
+                    if (document.getDocumentName() != null) {
+                        existingDocument.setDocumentName(document.getDocumentName());
+                    }
+                    if (document.getEmployeeId() != null) {
+                        existingDocument.setEmployeeId(document.getEmployeeId());
+                    }
 
-                return existingDocument;
-            })
+                    return existingDocument;
+                }
+            )
             .map(documentRepository::save);
     }
 
@@ -70,6 +77,17 @@ public class DocumentService {
     public Page<Document> findAll(Pageable pageable) {
         log.debug("Request to get all Documents");
         return documentRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Document> findAllByEmployeeId(Pageable pageable, Long id) {
+        List<Document> documents = documentRepository.findAll(pageable)
+            .stream()
+            .filter(document -> document.getEmployeeId() == id)
+            .collect(Collectors.toList());
+        
+        
+            return new PageImpl<>(documents,pageable,documents.size());
     }
 
     /**

@@ -111,7 +111,7 @@ public class DocumentResource {
      * or with status {@code 500 (Internal Server Error)} if the document couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/documents/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/documents/{id}", consumes = "application/merge-patch+json")
     public ResponseEntity<Document> partialUpdateDocument(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Document document
@@ -156,11 +156,20 @@ public class DocumentResource {
      * @param id the id of the document to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the document, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/documents/{id}")
-    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
-        log.debug("REST request to get Document : {}", id);
-        Optional<Document> document = documentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(document);
+    // @GetMapping("/documents/{id}")
+    // public ResponseEntity<Document> getDocument(@PathVariable Long id) {
+    //     log.debug("REST request to get Document : {}", id);
+    //     Optional<Document> document = documentService.findOne(id);
+    //     return ResponseUtil.wrapOrNotFound(document);
+    // }
+
+    @GetMapping("/documents/edocument/{id}")
+    public ResponseEntity<List<Document>> getEDocument(Pageable pageable, @PathVariable Long id) {
+        log.debug("REST request to get a page of Documents");
+        Page<Document> page = documentService.findAllByEmployeeId(pageable, id);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        
     }
 
     /**

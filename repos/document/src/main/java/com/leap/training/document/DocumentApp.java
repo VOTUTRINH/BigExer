@@ -97,7 +97,7 @@ public class DocumentApp {
             hostAddress,
             serverPort,
             contextPath,
-            env.getActiveProfiles().length == 0 ? env.getDefaultProfiles() : env.getActiveProfiles()
+            env.getActiveProfiles()
         );
 
         String configServerStatus = env.getProperty("configserver.status");

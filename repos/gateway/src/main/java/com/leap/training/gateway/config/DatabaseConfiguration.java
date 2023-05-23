@@ -37,7 +37,7 @@ import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.h2.H2ConfigurationHelper;
 
 @Configuration
-@EnableR2dbcRepositories({ "com.leap.training.gateway.repository" })
+@EnableR2dbcRepositories("com.leap.training.gateway.repository")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
 

@@ -97,9 +97,9 @@ describe('JobHistory e2e test', () => {
     cy.get(entityCreateButtonSelector).click({ force: true });
     cy.getEntityCreateUpdateHeading('JobHistory');
 
-    cy.get(`[data-cy="startDate"]`).type('2023-05-19T09:42').should('have.value', '2023-05-19T09:42');
+    cy.get(`[data-cy="startDate"]`).type('2023-05-22T04:21').should('have.value', '2023-05-22T04:21');
 
-    cy.get(`[data-cy="endDate"]`).type('2023-05-18T23:50').should('have.value', '2023-05-18T23:50');
+    cy.get(`[data-cy="endDate"]`).type('2023-05-21T18:29').should('have.value', '2023-05-21T18:29');
 
     cy.get(`[data-cy="salary"]`).type('61032').should('have.value', '61032');
 

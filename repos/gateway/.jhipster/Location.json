@@ -42,5 +42,5 @@
   "embedded": false,
   "applications": ["employee", "gateway"],
   "databaseType": "sql",
-  "changelogDate": "20230519094528"
+  "changelogDate": "20230522043020"
 }

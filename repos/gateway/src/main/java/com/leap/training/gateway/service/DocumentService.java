@@ -47,16 +47,18 @@ public class DocumentService {
 
         return documentRepository
             .findById(document.getId())
-            .map(existingDocument -> {
-                if (document.getDocumentName() != null) {
-                    existingDocument.setDocumentName(document.getDocumentName());
-                }
-                if (document.getEmployeeId() != null) {
-                    existingDocument.setEmployeeId(document.getEmployeeId());
-                }
+            .map(
+                existingDocument -> {
+                    if (document.getDocumentName() != null) {
+                        existingDocument.setDocumentName(document.getDocumentName());
+                    }
+                    if (document.getEmployeeId() != null) {
+                        existingDocument.setEmployeeId(document.getEmployeeId());
+                    }
 
-                return existingDocument;
-            })
+                    return existingDocument;
+                }
+            )
             .flatMap(documentRepository::save);
     }
 

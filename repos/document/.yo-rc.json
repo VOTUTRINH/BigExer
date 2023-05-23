@@ -20,12 +20,10 @@
     "skipClient": true,
     "testFrameworks": [],
     "websocket": false,
-    "enableGradleEnterprise": false,
-    "gradleEnterpriseHost": "",
     "applicationType": "microservice",
     "packageName": "com.leap.training.document",
     "packageFolder": "com/leap/training/document",
-    "jhipsterVersion": "7.3.0",
+    "jhipsterVersion": "7.1.0",
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
     "entitySuffix": "",
@@ -42,9 +40,9 @@
     "clientThemeVariant": "",
     "withAdminUi": false,
     "nativeLanguage": "en",
-    "creationTimestamp": 1684489468451,
-    "jwtSecretKey": "MmJjOWYwYTQ3Zjk5NjhiYTFhMDMxZTg1NGQzMDNiNDQ1ZDlhMWMxMjU2OTVjYzQzZjg4M2EzM2U4MmVkMjc4NDcwM2M3Yzg5MDA1MWNlYzI2MGI0ZDRkZDM2ZDg1ODlmZGI5MzY1ZDQ0ZDkzN2RkOTExNzRiZmU3ZTczNzAzNTg=",
-    "entities": ["DocumentType", "Document"],
-    "lastLiquibaseTimestamp": 1684489588000
+    "creationTimestamp": 1684729340274,
+    "jwtSecretKey": "MTZkMGNhOGM1YjdmZjI4YjY0ZDY2ZjhmNTA1YjRhY2IwMDE3ZDUxNjliMWM4NTU0YTk0NTAwMzU3ZmVkZDQ0ZTllZGE1ZWI1YjczODYwNmRlMWFlYWI2Nzg3MGRkMDFlMTc5MjViOGIxM2ZiMTlkNDcxOTQ3ZWRlZDU1Y2ZmY2Q=",
+    "entities": ["Document", "DocumentType"],
+    "lastLiquibaseTimestamp": 1684729460000
   }
 }

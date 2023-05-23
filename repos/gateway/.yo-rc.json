@@ -22,12 +22,10 @@
     "skipClient": false,
     "testFrameworks": ["cypress"],
     "websocket": false,
-    "enableGradleEnterprise": false,
-    "gradleEnterpriseHost": "",
     "applicationType": "gateway",
     "packageName": "com.leap.training.gateway",
     "packageFolder": "com/leap/training/gateway",
-    "jhipsterVersion": "7.3.0",
+    "jhipsterVersion": "7.1.0",
     "skipServer": false,
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
@@ -42,10 +40,10 @@
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1684489468461,
-    "jwtSecretKey": "ZDk1YzY1ZDAzNDU2NDU3NmI0YTMzNmQ2MGJiZjFiNDEwNTdmNmU5MmIxNzhmOWY5NzA2OThhZWFmYThkYmQ3OTBjNzU1OTQ3OGM2M2E1NjU0Njc0N2FlZDAwNTNhMTg5ZGI5ZTkxMzRkOWRjNzI3NjA1Y2UyZDg1MGMzZTkxMjM=",
+    "creationTimestamp": 1684729340286,
+    "jwtSecretKey": "YzA4NjI3M2Q3MDA0NDhjOTc2NDg2MmVlMzIzNTJiNDQwZTJhM2VhNjQwYThkNmIxMDU5Y2ZjYmZlMTRmYzEyYzNlMzcyOTg2NTEzYTEwZGNkMzhlNTA3NDU3ODA2MWY3NmZkYjk4MDIzNTYzNzZiZTRkZjRiMzVkNTJkNTQwY2Q=",
     "devServerPort": 4202,
-    "entities": ["Location", "Country", "Region", "DocumentType", "Job", "JobHistory", "Document", "Employee", "Department"],
-    "lastLiquibaseTimestamp": 1684490008000
+    "entities": ["Country", "Department", "Document", "DocumentType", "Employee", "Job", "JobHistory", "Location", "Region"],
+    "lastLiquibaseTimestamp": 1684729880000
   }
 }

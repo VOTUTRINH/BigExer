@@ -46,9 +46,9 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
+            createCache(cm, com.leap.training.document.domain.Document.class.getName());
             createCache(cm, com.leap.training.document.domain.DocumentType.class.getName());
             createCache(cm, com.leap.training.document.domain.DocumentType.class.getName() + ".documents");
-            createCache(cm, com.leap.training.document.domain.Document.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

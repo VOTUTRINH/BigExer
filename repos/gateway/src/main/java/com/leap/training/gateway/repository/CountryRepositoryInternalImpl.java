@@ -82,15 +82,16 @@ class CountryRepositoryInternalImpl implements CountryRepositoryInternal {
         String alias = entityTable.getReferenceName().getReference();
         String selectWhere = Optional
             .ofNullable(criteria)
-            .map(crit ->
-                new StringBuilder(select)
-                    .append(" ")
-                    .append("WHERE")
-                    .append(" ")
-                    .append(alias)
-                    .append(".")
-                    .append(crit.toString())
-                    .toString()
+            .map(
+                crit ->
+                    new StringBuilder(select)
+                        .append(" ")
+                        .append("WHERE")
+                        .append(" ")
+                        .append(alias)
+                        .append(".")
+                        .append(crit.toString())
+                        .toString()
             )
             .orElse(select); // TODO remove once https://github.com/spring-projects/spring-data-jdbc/issues/907 will be fixed
         return db.sql(selectWhere).map(this::process);
@@ -123,12 +124,14 @@ class CountryRepositoryInternalImpl implements CountryRepositoryInternal {
             return insert(entity);
         } else {
             return update(entity)
-                .map(numberOfUpdates -> {
-                    if (numberOfUpdates.intValue() <= 0) {
-                        throw new IllegalStateException("Unable to update Country with id = " + entity.getId());
+                .map(
+                    numberOfUpdates -> {
+                        if (numberOfUpdates.intValue() <= 0) {
+                            throw new IllegalStateException("Unable to update Country with id = " + entity.getId());
+                        }
+                        return entity;
                     }
-                    return entity;
-                });
+                );
         }
     }
 

@@ -47,13 +47,15 @@ public class CountryService {
 
         return countryRepository
             .findById(country.getId())
-            .map(existingCountry -> {
-                if (country.getCountryName() != null) {
-                    existingCountry.setCountryName(country.getCountryName());
-                }
+            .map(
+                existingCountry -> {
+                    if (country.getCountryName() != null) {
+                        existingCountry.setCountryName(country.getCountryName());
+                    }
 
-                return existingCountry;
-            })
+                    return existingCountry;
+                }
+            )
             .flatMap(countryRepository::save);
     }
 

@@ -47,31 +47,33 @@ public class EmployeeService {
 
         return employeeRepository
             .findById(employee.getId())
-            .map(existingEmployee -> {
-                if (employee.getFirstName() != null) {
-                    existingEmployee.setFirstName(employee.getFirstName());
-                }
-                if (employee.getLastName() != null) {
-                    existingEmployee.setLastName(employee.getLastName());
-                }
-                if (employee.getEmail() != null) {
-                    existingEmployee.setEmail(employee.getEmail());
-                }
-                if (employee.getPhoneNumber() != null) {
-                    existingEmployee.setPhoneNumber(employee.getPhoneNumber());
-                }
-                if (employee.getHireDate() != null) {
-                    existingEmployee.setHireDate(employee.getHireDate());
-                }
-                if (employee.getSalary() != null) {
-                    existingEmployee.setSalary(employee.getSalary());
-                }
-                if (employee.getCommissionPct() != null) {
-                    existingEmployee.setCommissionPct(employee.getCommissionPct());
-                }
+            .map(
+                existingEmployee -> {
+                    if (employee.getFirstName() != null) {
+                        existingEmployee.setFirstName(employee.getFirstName());
+                    }
+                    if (employee.getLastName() != null) {
+                        existingEmployee.setLastName(employee.getLastName());
+                    }
+                    if (employee.getEmail() != null) {
+                        existingEmployee.setEmail(employee.getEmail());
+                    }
+                    if (employee.getPhoneNumber() != null) {
+                        existingEmployee.setPhoneNumber(employee.getPhoneNumber());
+                    }
+                    if (employee.getHireDate() != null) {
+                        existingEmployee.setHireDate(employee.getHireDate());
+                    }
+                    if (employee.getSalary() != null) {
+                        existingEmployee.setSalary(employee.getSalary());
+                    }
+                    if (employee.getCommissionPct() != null) {
+                        existingEmployee.setCommissionPct(employee.getCommissionPct());
+                    }
 
-                return existingEmployee;
-            })
+                    return existingEmployee;
+                }
+            )
             .flatMap(employeeRepository::save);
     }
 

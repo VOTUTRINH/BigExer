@@ -68,16 +68,18 @@ public class DepartmentResource {
         }
         return departmentService
             .save(department)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/departments/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
+            .map(
+                result -> {
+                    try {
+                        return ResponseEntity
+                            .created(new URI("/api/departments/" + result.getId()))
+                            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                            .body(result);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            });
+            );
     }
 
     /**
@@ -105,21 +107,26 @@ public class DepartmentResource {
 
         return departmentRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
 
-                return departmentService
-                    .save(department)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(result ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                            .body(result)
-                    );
-            });
+                    return departmentService
+                        .save(department)
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            result ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(
+                                        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+                                    )
+                                    .body(result)
+                        );
+                }
+            );
     }
 
     /**
@@ -133,7 +140,7 @@ public class DepartmentResource {
      * or with status {@code 500 (Internal Server Error)} if the department couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/departments/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/departments/{id}", consumes = "application/merge-patch+json")
     public Mono<ResponseEntity<Department>> partialUpdateDepartment(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Department department
@@ -148,22 +155,25 @@ public class DepartmentResource {
 
         return departmentRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
+
+                    Mono<Department> result = departmentService.partialUpdate(department);
+
+                    return result
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            res ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
+                                    .body(res)
+                        );
                 }
-
-                Mono<Department> result = departmentService.partialUpdate(department);
-
-                return result
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(res ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
-                            .body(res)
-                    );
-            });
+            );
     }
 
     /**
@@ -179,17 +189,19 @@ public class DepartmentResource {
         return departmentService
             .countAll()
             .zipWith(departmentService.findAll(pageable).collectList())
-            .map(countWithEntities -> {
-                return ResponseEntity
-                    .ok()
-                    .headers(
-                        PaginationUtil.generatePaginationHttpHeaders(
-                            UriComponentsBuilder.fromHttpRequest(request),
-                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+            .map(
+                countWithEntities -> {
+                    return ResponseEntity
+                        .ok()
+                        .headers(
+                            PaginationUtil.generatePaginationHttpHeaders(
+                                UriComponentsBuilder.fromHttpRequest(request),
+                                new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                            )
                         )
-                    )
-                    .body(countWithEntities.getT2());
-            });
+                        .body(countWithEntities.getT2());
+                }
+            );
     }
 
     /**
@@ -217,11 +229,12 @@ public class DepartmentResource {
         log.debug("REST request to delete Department : {}", id);
         return departmentService
             .delete(id)
-            .map(result ->
-                ResponseEntity
-                    .noContent()
-                    .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                    .build()
+            .map(
+                result ->
+                    ResponseEntity
+                        .noContent()
+                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                        .build()
             );
     }
 }

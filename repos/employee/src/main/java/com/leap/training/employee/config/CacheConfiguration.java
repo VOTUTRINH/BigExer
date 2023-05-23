@@ -46,23 +46,23 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-            createCache(cm, com.leap.training.employee.domain.Location.class.getName());
-            createCache(cm, com.leap.training.employee.domain.Location.class.getName() + ".departments");
             createCache(cm, com.leap.training.employee.domain.Country.class.getName());
             createCache(cm, com.leap.training.employee.domain.Country.class.getName() + ".locations");
-            createCache(cm, com.leap.training.employee.domain.Region.class.getName());
-            createCache(cm, com.leap.training.employee.domain.Region.class.getName() + ".countries");
-            createCache(cm, com.leap.training.employee.domain.Job.class.getName());
-            createCache(cm, com.leap.training.employee.domain.Job.class.getName() + ".employees");
-            createCache(cm, com.leap.training.employee.domain.Job.class.getName() + ".jobHistories");
-            createCache(cm, com.leap.training.employee.domain.JobHistory.class.getName());
+            createCache(cm, com.leap.training.employee.domain.Department.class.getName());
+            createCache(cm, com.leap.training.employee.domain.Department.class.getName() + ".employees");
+            createCache(cm, com.leap.training.employee.domain.Department.class.getName() + ".jobHistories");
             createCache(cm, com.leap.training.employee.domain.Employee.class.getName());
             createCache(cm, com.leap.training.employee.domain.Employee.class.getName() + ".subEmployees");
             createCache(cm, com.leap.training.employee.domain.Employee.class.getName() + ".jobHistories");
             createCache(cm, com.leap.training.employee.domain.Employee.class.getName() + ".managedDepartments");
-            createCache(cm, com.leap.training.employee.domain.Department.class.getName());
-            createCache(cm, com.leap.training.employee.domain.Department.class.getName() + ".employees");
-            createCache(cm, com.leap.training.employee.domain.Department.class.getName() + ".jobHistories");
+            createCache(cm, com.leap.training.employee.domain.Job.class.getName());
+            createCache(cm, com.leap.training.employee.domain.Job.class.getName() + ".employees");
+            createCache(cm, com.leap.training.employee.domain.Job.class.getName() + ".jobHistories");
+            createCache(cm, com.leap.training.employee.domain.JobHistory.class.getName());
+            createCache(cm, com.leap.training.employee.domain.Location.class.getName());
+            createCache(cm, com.leap.training.employee.domain.Location.class.getName() + ".departments");
+            createCache(cm, com.leap.training.employee.domain.Region.class.getName());
+            createCache(cm, com.leap.training.employee.domain.Region.class.getName() + ".countries");
             // jhipster-needle-ehcache-add-entry
         };
     }

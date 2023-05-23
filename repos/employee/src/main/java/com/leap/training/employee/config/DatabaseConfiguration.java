@@ -14,7 +14,7 @@ import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.h2.H2ConfigurationHelper;
 
 @Configuration
-@EnableJpaRepositories({ "com.leap.training.employee.repository" })
+@EnableJpaRepositories("com.leap.training.employee.repository")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration {

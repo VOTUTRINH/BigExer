@@ -21,7 +21,6 @@ public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "street_address")
@@ -46,18 +45,17 @@ public class Location implements Serializable {
     private Country country;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Location id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Location id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getStreetAddress() {
@@ -65,7 +63,7 @@ public class Location implements Serializable {
     }
 
     public Location streetAddress(String streetAddress) {
-        this.setStreetAddress(streetAddress);
+        this.streetAddress = streetAddress;
         return this;
     }
 
@@ -78,7 +76,7 @@ public class Location implements Serializable {
     }
 
     public Location postalCode(String postalCode) {
-        this.setPostalCode(postalCode);
+        this.postalCode = postalCode;
         return this;
     }
 
@@ -91,7 +89,7 @@ public class Location implements Serializable {
     }
 
     public Location city(String city) {
-        this.setCity(city);
+        this.city = city;
         return this;
     }
 
@@ -104,7 +102,7 @@ public class Location implements Serializable {
     }
 
     public Location stateProvince(String stateProvince) {
-        this.setStateProvince(stateProvince);
+        this.stateProvince = stateProvince;
         return this;
     }
 
@@ -114,16 +112,6 @@ public class Location implements Serializable {
 
     public Set<Department> getDepartments() {
         return this.departments;
-    }
-
-    public void setDepartments(Set<Department> departments) {
-        if (this.departments != null) {
-            this.departments.forEach(i -> i.setLocation(null));
-        }
-        if (departments != null) {
-            departments.forEach(i -> i.setLocation(this));
-        }
-        this.departments = departments;
     }
 
     public Location departments(Set<Department> departments) {
@@ -143,17 +131,27 @@ public class Location implements Serializable {
         return this;
     }
 
-    public Country getCountry() {
-        return this.country;
+    public void setDepartments(Set<Department> departments) {
+        if (this.departments != null) {
+            this.departments.forEach(i -> i.setLocation(null));
+        }
+        if (departments != null) {
+            departments.forEach(i -> i.setLocation(this));
+        }
+        this.departments = departments;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public Country getCountry() {
+        return this.country;
     }
 
     public Location country(Country country) {
         this.setCountry(country);
         return this;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

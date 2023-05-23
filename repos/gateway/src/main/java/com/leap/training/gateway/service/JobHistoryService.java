@@ -47,19 +47,21 @@ public class JobHistoryService {
 
         return jobHistoryRepository
             .findById(jobHistory.getId())
-            .map(existingJobHistory -> {
-                if (jobHistory.getStartDate() != null) {
-                    existingJobHistory.setStartDate(jobHistory.getStartDate());
-                }
-                if (jobHistory.getEndDate() != null) {
-                    existingJobHistory.setEndDate(jobHistory.getEndDate());
-                }
-                if (jobHistory.getSalary() != null) {
-                    existingJobHistory.setSalary(jobHistory.getSalary());
-                }
+            .map(
+                existingJobHistory -> {
+                    if (jobHistory.getStartDate() != null) {
+                        existingJobHistory.setStartDate(jobHistory.getStartDate());
+                    }
+                    if (jobHistory.getEndDate() != null) {
+                        existingJobHistory.setEndDate(jobHistory.getEndDate());
+                    }
+                    if (jobHistory.getSalary() != null) {
+                        existingJobHistory.setSalary(jobHistory.getSalary());
+                    }
 
-                return existingJobHistory;
-            })
+                    return existingJobHistory;
+                }
+            )
             .flatMap(jobHistoryRepository::save);
     }
 

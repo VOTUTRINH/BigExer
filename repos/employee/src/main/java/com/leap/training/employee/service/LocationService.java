@@ -47,22 +47,24 @@ public class LocationService {
 
         return locationRepository
             .findById(location.getId())
-            .map(existingLocation -> {
-                if (location.getStreetAddress() != null) {
-                    existingLocation.setStreetAddress(location.getStreetAddress());
-                }
-                if (location.getPostalCode() != null) {
-                    existingLocation.setPostalCode(location.getPostalCode());
-                }
-                if (location.getCity() != null) {
-                    existingLocation.setCity(location.getCity());
-                }
-                if (location.getStateProvince() != null) {
-                    existingLocation.setStateProvince(location.getStateProvince());
-                }
+            .map(
+                existingLocation -> {
+                    if (location.getStreetAddress() != null) {
+                        existingLocation.setStreetAddress(location.getStreetAddress());
+                    }
+                    if (location.getPostalCode() != null) {
+                        existingLocation.setPostalCode(location.getPostalCode());
+                    }
+                    if (location.getCity() != null) {
+                        existingLocation.setCity(location.getCity());
+                    }
+                    if (location.getStateProvince() != null) {
+                        existingLocation.setStateProvince(location.getStateProvince());
+                    }
 
-                return existingLocation;
-            })
+                    return existingLocation;
+                }
+            )
             .map(locationRepository::save);
     }
 

@@ -18,7 +18,6 @@ public class Job implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("job_title")
@@ -42,18 +41,17 @@ public class Job implements Serializable {
     private Set<JobHistory> jobHistories = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Job id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Job id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getJobTitle() {
@@ -61,7 +59,7 @@ public class Job implements Serializable {
     }
 
     public Job jobTitle(String jobTitle) {
-        this.setJobTitle(jobTitle);
+        this.jobTitle = jobTitle;
         return this;
     }
 
@@ -74,7 +72,7 @@ public class Job implements Serializable {
     }
 
     public Job minSalary(Long minSalary) {
-        this.setMinSalary(minSalary);
+        this.minSalary = minSalary;
         return this;
     }
 
@@ -87,7 +85,7 @@ public class Job implements Serializable {
     }
 
     public Job maxSalary(Long maxSalary) {
-        this.setMaxSalary(maxSalary);
+        this.maxSalary = maxSalary;
         return this;
     }
 
@@ -97,16 +95,6 @@ public class Job implements Serializable {
 
     public Set<Employee> getEmployees() {
         return this.employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        if (this.employees != null) {
-            this.employees.forEach(i -> i.setJob(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setJob(this));
-        }
-        this.employees = employees;
     }
 
     public Job employees(Set<Employee> employees) {
@@ -126,18 +114,18 @@ public class Job implements Serializable {
         return this;
     }
 
-    public Set<JobHistory> getJobHistories() {
-        return this.jobHistories;
+    public void setEmployees(Set<Employee> employees) {
+        if (this.employees != null) {
+            this.employees.forEach(i -> i.setJob(null));
+        }
+        if (employees != null) {
+            employees.forEach(i -> i.setJob(this));
+        }
+        this.employees = employees;
     }
 
-    public void setJobHistories(Set<JobHistory> jobHistories) {
-        if (this.jobHistories != null) {
-            this.jobHistories.forEach(i -> i.setJob(null));
-        }
-        if (jobHistories != null) {
-            jobHistories.forEach(i -> i.setJob(this));
-        }
-        this.jobHistories = jobHistories;
+    public Set<JobHistory> getJobHistories() {
+        return this.jobHistories;
     }
 
     public Job jobHistories(Set<JobHistory> jobHistories) {
@@ -155,6 +143,16 @@ public class Job implements Serializable {
         this.jobHistories.remove(jobHistory);
         jobHistory.setJob(null);
         return this;
+    }
+
+    public void setJobHistories(Set<JobHistory> jobHistories) {
+        if (this.jobHistories != null) {
+            this.jobHistories.forEach(i -> i.setJob(null));
+        }
+        if (jobHistories != null) {
+            jobHistories.forEach(i -> i.setJob(this));
+        }
+        this.jobHistories = jobHistories;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

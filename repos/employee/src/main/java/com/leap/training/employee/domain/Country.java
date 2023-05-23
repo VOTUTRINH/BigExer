@@ -21,7 +21,6 @@ public class Country implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "country_name")
@@ -37,18 +36,17 @@ public class Country implements Serializable {
     private Region region;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Country id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Country id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getCountryName() {
@@ -56,7 +54,7 @@ public class Country implements Serializable {
     }
 
     public Country countryName(String countryName) {
-        this.setCountryName(countryName);
+        this.countryName = countryName;
         return this;
     }
 
@@ -66,16 +64,6 @@ public class Country implements Serializable {
 
     public Set<Location> getLocations() {
         return this.locations;
-    }
-
-    public void setLocations(Set<Location> locations) {
-        if (this.locations != null) {
-            this.locations.forEach(i -> i.setCountry(null));
-        }
-        if (locations != null) {
-            locations.forEach(i -> i.setCountry(this));
-        }
-        this.locations = locations;
     }
 
     public Country locations(Set<Location> locations) {
@@ -95,17 +83,27 @@ public class Country implements Serializable {
         return this;
     }
 
-    public Region getRegion() {
-        return this.region;
+    public void setLocations(Set<Location> locations) {
+        if (this.locations != null) {
+            this.locations.forEach(i -> i.setCountry(null));
+        }
+        if (locations != null) {
+            locations.forEach(i -> i.setCountry(this));
+        }
+        this.locations = locations;
     }
 
-    public void setRegion(Region region) {
-        this.region = region;
+    public Region getRegion() {
+        return this.region;
     }
 
     public Country region(Region region) {
         this.setRegion(region);
         return this;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

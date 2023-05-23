@@ -17,7 +17,7 @@ services:
     ports:
       - 127.0.0.1:8080:8080
   jhipster-registry:
-    image: jhipster/jhipster-registry:v7.1.0
+    image: jhipster/jhipster-registry:v6.8.0
     volumes:
       - ./central-server-config:/central-config
     # When run with the "dev" Spring profile, the JHipster Registry will
@@ -25,7 +25,6 @@ services:
     # When run with the "prod" Spring profile, it will read the configuration from a Git repository
     # See https://www.jhipster.tech/jhipster-registry/#spring-cloud-config
     environment:
-      - JHIPSTER_SLEEP=20
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=dev,api-docs
       - SPRING_SECURITY_USER_PASSWORD=admin

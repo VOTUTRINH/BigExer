@@ -47,13 +47,15 @@ public class RegionService {
 
         return regionRepository
             .findById(region.getId())
-            .map(existingRegion -> {
-                if (region.getRegionName() != null) {
-                    existingRegion.setRegionName(region.getRegionName());
-                }
+            .map(
+                existingRegion -> {
+                    if (region.getRegionName() != null) {
+                        existingRegion.setRegionName(region.getRegionName());
+                    }
 
-                return existingRegion;
-            })
+                    return existingRegion;
+                }
+            )
             .flatMap(regionRepository::save);
     }
 

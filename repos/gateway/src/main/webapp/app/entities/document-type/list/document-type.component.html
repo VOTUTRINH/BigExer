@@ -31,7 +31,7 @@
   <div class="table-responsive" id="entities" *ngIf="documentTypes && documentTypes.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
           <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="description">
             <span jhiTranslate="gatewayApp.documentType.description">Description</span> <fa-icon icon="sort"></fa-icon>

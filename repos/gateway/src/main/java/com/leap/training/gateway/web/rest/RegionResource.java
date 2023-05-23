@@ -68,16 +68,18 @@ public class RegionResource {
         }
         return regionService
             .save(region)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/regions/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
+            .map(
+                result -> {
+                    try {
+                        return ResponseEntity
+                            .created(new URI("/api/regions/" + result.getId()))
+                            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                            .body(result);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            });
+            );
     }
 
     /**
@@ -105,21 +107,26 @@ public class RegionResource {
 
         return regionRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
 
-                return regionService
-                    .save(region)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(result ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                            .body(result)
-                    );
-            });
+                    return regionService
+                        .save(region)
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            result ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(
+                                        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+                                    )
+                                    .body(result)
+                        );
+                }
+            );
     }
 
     /**
@@ -133,7 +140,7 @@ public class RegionResource {
      * or with status {@code 500 (Internal Server Error)} if the region couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/regions/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/regions/{id}", consumes = "application/merge-patch+json")
     public Mono<ResponseEntity<Region>> partialUpdateRegion(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Region region
@@ -148,22 +155,25 @@ public class RegionResource {
 
         return regionRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
+
+                    Mono<Region> result = regionService.partialUpdate(region);
+
+                    return result
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            res ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
+                                    .body(res)
+                        );
                 }
-
-                Mono<Region> result = regionService.partialUpdate(region);
-
-                return result
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(res ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
-                            .body(res)
-                    );
-            });
+            );
     }
 
     /**
@@ -179,17 +189,19 @@ public class RegionResource {
         return regionService
             .countAll()
             .zipWith(regionService.findAll(pageable).collectList())
-            .map(countWithEntities -> {
-                return ResponseEntity
-                    .ok()
-                    .headers(
-                        PaginationUtil.generatePaginationHttpHeaders(
-                            UriComponentsBuilder.fromHttpRequest(request),
-                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+            .map(
+                countWithEntities -> {
+                    return ResponseEntity
+                        .ok()
+                        .headers(
+                            PaginationUtil.generatePaginationHttpHeaders(
+                                UriComponentsBuilder.fromHttpRequest(request),
+                                new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                            )
                         )
-                    )
-                    .body(countWithEntities.getT2());
-            });
+                        .body(countWithEntities.getT2());
+                }
+            );
     }
 
     /**
@@ -217,11 +229,12 @@ public class RegionResource {
         log.debug("REST request to delete Region : {}", id);
         return regionService
             .delete(id)
-            .map(result ->
-                ResponseEntity
-                    .noContent()
-                    .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                    .build()
+            .map(
+                result ->
+                    ResponseEntity
+                        .noContent()
+                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                        .build()
             );
     }
 }

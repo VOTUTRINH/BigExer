@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   jhipster-registry:
-    image: jhipster/jhipster-registry:v7.1.0
+    image: jhipster/jhipster-registry:v6.8.0
     volumes:
       - ./central-server-config:/central-config
     # When run with the "dev" Spring profile, the JHipster Registry will
@@ -16,6 +16,7 @@ services:
       - JHIPSTER_REGISTRY_PASSWORD=admin
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/localhost-config/
+      #- ENV NODE_OPTIONS=--openssl-legacy-provider
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config

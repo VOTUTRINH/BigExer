@@ -18,7 +18,6 @@ public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("street_address")
@@ -37,26 +36,25 @@ public class Location implements Serializable {
     @JsonIgnoreProperties(value = { "employees", "jobHistories", "manager", "location" }, allowSetters = true)
     private Set<Department> departments = new HashSet<>();
 
-    @Transient
     @JsonIgnoreProperties(value = { "locations", "region" }, allowSetters = true)
+    @Transient
     private Country country;
 
     @Column("country_id")
     private Long countryId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Location id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Location id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getStreetAddress() {
@@ -64,7 +62,7 @@ public class Location implements Serializable {
     }
 
     public Location streetAddress(String streetAddress) {
-        this.setStreetAddress(streetAddress);
+        this.streetAddress = streetAddress;
         return this;
     }
 
@@ -77,7 +75,7 @@ public class Location implements Serializable {
     }
 
     public Location postalCode(String postalCode) {
-        this.setPostalCode(postalCode);
+        this.postalCode = postalCode;
         return this;
     }
 
@@ -90,7 +88,7 @@ public class Location implements Serializable {
     }
 
     public Location city(String city) {
-        this.setCity(city);
+        this.city = city;
         return this;
     }
 
@@ -103,7 +101,7 @@ public class Location implements Serializable {
     }
 
     public Location stateProvince(String stateProvince) {
-        this.setStateProvince(stateProvince);
+        this.stateProvince = stateProvince;
         return this;
     }
 
@@ -113,16 +111,6 @@ public class Location implements Serializable {
 
     public Set<Department> getDepartments() {
         return this.departments;
-    }
-
-    public void setDepartments(Set<Department> departments) {
-        if (this.departments != null) {
-            this.departments.forEach(i -> i.setLocation(null));
-        }
-        if (departments != null) {
-            departments.forEach(i -> i.setLocation(this));
-        }
-        this.departments = departments;
     }
 
     public Location departments(Set<Department> departments) {
@@ -142,18 +130,29 @@ public class Location implements Serializable {
         return this;
     }
 
+    public void setDepartments(Set<Department> departments) {
+        if (this.departments != null) {
+            this.departments.forEach(i -> i.setLocation(null));
+        }
+        if (departments != null) {
+            departments.forEach(i -> i.setLocation(this));
+        }
+        this.departments = departments;
+    }
+
     public Country getCountry() {
         return this.country;
+    }
+
+    public Location country(Country country) {
+        this.setCountry(country);
+        this.countryId = country != null ? country.getId() : null;
+        return this;
     }
 
     public void setCountry(Country country) {
         this.country = country;
         this.countryId = country != null ? country.getId() : null;
-    }
-
-    public Location country(Country country) {
-        this.setCountry(country);
-        return this;
     }
 
     public Long getCountryId() {

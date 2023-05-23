@@ -47,19 +47,21 @@ public class JobService {
 
         return jobRepository
             .findById(job.getId())
-            .map(existingJob -> {
-                if (job.getJobTitle() != null) {
-                    existingJob.setJobTitle(job.getJobTitle());
-                }
-                if (job.getMinSalary() != null) {
-                    existingJob.setMinSalary(job.getMinSalary());
-                }
-                if (job.getMaxSalary() != null) {
-                    existingJob.setMaxSalary(job.getMaxSalary());
-                }
+            .map(
+                existingJob -> {
+                    if (job.getJobTitle() != null) {
+                        existingJob.setJobTitle(job.getJobTitle());
+                    }
+                    if (job.getMinSalary() != null) {
+                        existingJob.setMinSalary(job.getMinSalary());
+                    }
+                    if (job.getMaxSalary() != null) {
+                        existingJob.setMaxSalary(job.getMaxSalary());
+                    }
 
-                return existingJob;
-            })
+                    return existingJob;
+                }
+            )
             .map(jobRepository::save);
     }
 

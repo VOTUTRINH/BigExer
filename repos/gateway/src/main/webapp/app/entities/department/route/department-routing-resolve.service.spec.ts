@@ -11,70 +11,72 @@ import { DepartmentService } from '../service/department.service';
 
 import { DepartmentRoutingResolveService } from './department-routing-resolve.service';
 
-describe('Department routing resolve service', () => {
-  let mockRouter: Router;
-  let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
-  let routingResolveService: DepartmentRoutingResolveService;
-  let service: DepartmentService;
-  let resultDepartment: IDepartment | undefined;
+describe('Service Tests', () => {
+  describe('Department routing resolve service', () => {
+    let mockRouter: Router;
+    let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+    let routingResolveService: DepartmentRoutingResolveService;
+    let service: DepartmentService;
+    let resultDepartment: IDepartment | undefined;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [Router, ActivatedRouteSnapshot],
-    });
-    mockRouter = TestBed.inject(Router);
-    mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
-    routingResolveService = TestBed.inject(DepartmentRoutingResolveService);
-    service = TestBed.inject(DepartmentService);
-    resultDepartment = undefined;
-  });
-
-  describe('resolve', () => {
-    it('should return IDepartment returned by find', () => {
-      // GIVEN
-      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
-      mockActivatedRouteSnapshot.params = { id: 123 };
-
-      // WHEN
-      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultDepartment = result;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [Router, ActivatedRouteSnapshot],
       });
-
-      // THEN
-      expect(service.find).toBeCalledWith(123);
-      expect(resultDepartment).toEqual({ id: 123 });
+      mockRouter = TestBed.inject(Router);
+      mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
+      routingResolveService = TestBed.inject(DepartmentRoutingResolveService);
+      service = TestBed.inject(DepartmentService);
+      resultDepartment = undefined;
     });
 
-    it('should return new IDepartment if id is not provided', () => {
-      // GIVEN
-      service.find = jest.fn();
-      mockActivatedRouteSnapshot.params = {};
+    describe('resolve', () => {
+      it('should return IDepartment returned by find', () => {
+        // GIVEN
+        service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+        mockActivatedRouteSnapshot.params = { id: 123 };
 
-      // WHEN
-      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultDepartment = result;
+        // WHEN
+        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+          resultDepartment = result;
+        });
+
+        // THEN
+        expect(service.find).toBeCalledWith(123);
+        expect(resultDepartment).toEqual({ id: 123 });
       });
 
-      // THEN
-      expect(service.find).not.toBeCalled();
-      expect(resultDepartment).toEqual(new Department());
-    });
+      it('should return new IDepartment if id is not provided', () => {
+        // GIVEN
+        service.find = jest.fn();
+        mockActivatedRouteSnapshot.params = {};
 
-    it('should route to 404 page if data not found in server', () => {
-      // GIVEN
-      jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Department })));
-      mockActivatedRouteSnapshot.params = { id: 123 };
+        // WHEN
+        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+          resultDepartment = result;
+        });
 
-      // WHEN
-      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultDepartment = result;
+        // THEN
+        expect(service.find).not.toBeCalled();
+        expect(resultDepartment).toEqual(new Department());
       });
 
-      // THEN
-      expect(service.find).toBeCalledWith(123);
-      expect(resultDepartment).toEqual(undefined);
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
+      it('should route to 404 page if data not found in server', () => {
+        // GIVEN
+        jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Department })));
+        mockActivatedRouteSnapshot.params = { id: 123 };
+
+        // WHEN
+        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+          resultDepartment = result;
+        });
+
+        // THEN
+        expect(service.find).toBeCalledWith(123);
+        expect(resultDepartment).toEqual(undefined);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
+      });
     });
   });
 });

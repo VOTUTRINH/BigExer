@@ -68,16 +68,18 @@ public class JobHistoryResource {
         }
         return jobHistoryService
             .save(jobHistory)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/job-histories/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
+            .map(
+                result -> {
+                    try {
+                        return ResponseEntity
+                            .created(new URI("/api/job-histories/" + result.getId()))
+                            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                            .body(result);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            });
+            );
     }
 
     /**
@@ -105,21 +107,26 @@ public class JobHistoryResource {
 
         return jobHistoryRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
 
-                return jobHistoryService
-                    .save(jobHistory)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(result ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                            .body(result)
-                    );
-            });
+                    return jobHistoryService
+                        .save(jobHistory)
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            result ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(
+                                        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+                                    )
+                                    .body(result)
+                        );
+                }
+            );
     }
 
     /**
@@ -133,7 +140,7 @@ public class JobHistoryResource {
      * or with status {@code 500 (Internal Server Error)} if the jobHistory couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/job-histories/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/job-histories/{id}", consumes = "application/merge-patch+json")
     public Mono<ResponseEntity<JobHistory>> partialUpdateJobHistory(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody JobHistory jobHistory
@@ -148,22 +155,25 @@ public class JobHistoryResource {
 
         return jobHistoryRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
+
+                    Mono<JobHistory> result = jobHistoryService.partialUpdate(jobHistory);
+
+                    return result
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            res ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
+                                    .body(res)
+                        );
                 }
-
-                Mono<JobHistory> result = jobHistoryService.partialUpdate(jobHistory);
-
-                return result
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(res ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
-                            .body(res)
-                    );
-            });
+            );
     }
 
     /**
@@ -179,17 +189,19 @@ public class JobHistoryResource {
         return jobHistoryService
             .countAll()
             .zipWith(jobHistoryService.findAll(pageable).collectList())
-            .map(countWithEntities -> {
-                return ResponseEntity
-                    .ok()
-                    .headers(
-                        PaginationUtil.generatePaginationHttpHeaders(
-                            UriComponentsBuilder.fromHttpRequest(request),
-                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+            .map(
+                countWithEntities -> {
+                    return ResponseEntity
+                        .ok()
+                        .headers(
+                            PaginationUtil.generatePaginationHttpHeaders(
+                                UriComponentsBuilder.fromHttpRequest(request),
+                                new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                            )
                         )
-                    )
-                    .body(countWithEntities.getT2());
-            });
+                        .body(countWithEntities.getT2());
+                }
+            );
     }
 
     /**
@@ -217,11 +229,12 @@ public class JobHistoryResource {
         log.debug("REST request to delete JobHistory : {}", id);
         return jobHistoryService
             .delete(id)
-            .map(result ->
-                ResponseEntity
-                    .noContent()
-                    .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                    .build()
+            .map(
+                result ->
+                    ResponseEntity
+                        .noContent()
+                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                        .build()
             );
     }
 }

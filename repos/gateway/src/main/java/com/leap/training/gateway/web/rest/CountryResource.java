@@ -68,16 +68,18 @@ public class CountryResource {
         }
         return countryService
             .save(country)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/countries/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
+            .map(
+                result -> {
+                    try {
+                        return ResponseEntity
+                            .created(new URI("/api/countries/" + result.getId()))
+                            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                            .body(result);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            });
+            );
     }
 
     /**
@@ -105,21 +107,26 @@ public class CountryResource {
 
         return countryRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
 
-                return countryService
-                    .save(country)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(result ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                            .body(result)
-                    );
-            });
+                    return countryService
+                        .save(country)
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            result ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(
+                                        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+                                    )
+                                    .body(result)
+                        );
+                }
+            );
     }
 
     /**
@@ -133,7 +140,7 @@ public class CountryResource {
      * or with status {@code 500 (Internal Server Error)} if the country couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/countries/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/countries/{id}", consumes = "application/merge-patch+json")
     public Mono<ResponseEntity<Country>> partialUpdateCountry(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Country country
@@ -148,22 +155,25 @@ public class CountryResource {
 
         return countryRepository
             .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+            .flatMap(
+                exists -> {
+                    if (!exists) {
+                        return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                    }
+
+                    Mono<Country> result = countryService.partialUpdate(country);
+
+                    return result
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                        .map(
+                            res ->
+                                ResponseEntity
+                                    .ok()
+                                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
+                                    .body(res)
+                        );
                 }
-
-                Mono<Country> result = countryService.partialUpdate(country);
-
-                return result
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(res ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
-                            .body(res)
-                    );
-            });
+            );
     }
 
     /**
@@ -179,17 +189,19 @@ public class CountryResource {
         return countryService
             .countAll()
             .zipWith(countryService.findAll(pageable).collectList())
-            .map(countWithEntities -> {
-                return ResponseEntity
-                    .ok()
-                    .headers(
-                        PaginationUtil.generatePaginationHttpHeaders(
-                            UriComponentsBuilder.fromHttpRequest(request),
-                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+            .map(
+                countWithEntities -> {
+                    return ResponseEntity
+                        .ok()
+                        .headers(
+                            PaginationUtil.generatePaginationHttpHeaders(
+                                UriComponentsBuilder.fromHttpRequest(request),
+                                new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                            )
                         )
-                    )
-                    .body(countWithEntities.getT2());
-            });
+                        .body(countWithEntities.getT2());
+                }
+            );
     }
 
     /**
@@ -217,11 +229,12 @@ public class CountryResource {
         log.debug("REST request to delete Country : {}", id);
         return countryService
             .delete(id)
-            .map(result ->
-                ResponseEntity
-                    .noContent()
-                    .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                    .build()
+            .map(
+                result ->
+                    ResponseEntity
+                        .noContent()
+                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                        .build()
             );
     }
 }

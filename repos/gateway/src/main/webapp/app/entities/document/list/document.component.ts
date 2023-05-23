@@ -23,6 +23,7 @@ export class DocumentComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  id = 0;
 
   constructor(
     protected documentService: DocumentService,
@@ -35,25 +36,23 @@ export class DocumentComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.documentService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IDocument[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
+    this.documentService.findByIdEmployee(this.id, { page: pageToLoad - 1, size: this.itemsPerPage, sort: this.sort() }).subscribe(
+      (res: HttpResponse<IDocument[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+      },
+      () => {
+        this.isLoading = false;
+        this.onError();
+      }
+    );
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      this.id = +params['id'];
+    });
+
     this.handleNavigation();
   }
 
@@ -83,7 +82,7 @@ export class DocumentComponent implements OnInit {
   protected handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
-      const pageNumber = +(page ?? 1);
+      const pageNumber = page !== null ? +page : 1;
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === ASC;

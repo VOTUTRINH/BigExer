@@ -47,13 +47,15 @@ public class DocumentTypeService {
 
         return documentTypeRepository
             .findById(documentType.getId())
-            .map(existingDocumentType -> {
-                if (documentType.getDescription() != null) {
-                    existingDocumentType.setDescription(documentType.getDescription());
-                }
+            .map(
+                existingDocumentType -> {
+                    if (documentType.getDescription() != null) {
+                        existingDocumentType.setDescription(documentType.getDescription());
+                    }
 
-                return existingDocumentType;
-            })
+                    return existingDocumentType;
+                }
+            )
             .map(documentTypeRepository::save);
     }
 

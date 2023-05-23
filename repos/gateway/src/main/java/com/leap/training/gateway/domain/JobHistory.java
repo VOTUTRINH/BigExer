@@ -17,7 +17,6 @@ public class JobHistory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("start_date")
@@ -29,43 +28,42 @@ public class JobHistory implements Serializable {
     @Column("salary")
     private Long salary;
 
-    @Transient
     @JsonIgnoreProperties(
         value = { "subEmployees", "jobHistories", "managedDepartments", "job", "manager", "department" },
         allowSetters = true
     )
+    @Transient
     private Employee employee;
-
-    @Transient
-    @JsonIgnoreProperties(value = { "employees", "jobHistories" }, allowSetters = true)
-    private Job job;
-
-    @Transient
-    @JsonIgnoreProperties(value = { "employees", "jobHistories", "manager", "location" }, allowSetters = true)
-    private Department department;
 
     @Column("employee_id")
     private Long employeeId;
 
+    @JsonIgnoreProperties(value = { "employees", "jobHistories" }, allowSetters = true)
+    @Transient
+    private Job job;
+
     @Column("job_id")
     private Long jobId;
+
+    @JsonIgnoreProperties(value = { "employees", "jobHistories", "manager", "location" }, allowSetters = true)
+    @Transient
+    private Department department;
 
     @Column("department_id")
     private Long departmentId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public JobHistory id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public JobHistory id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public Instant getStartDate() {
@@ -73,7 +71,7 @@ public class JobHistory implements Serializable {
     }
 
     public JobHistory startDate(Instant startDate) {
-        this.setStartDate(startDate);
+        this.startDate = startDate;
         return this;
     }
 
@@ -86,7 +84,7 @@ public class JobHistory implements Serializable {
     }
 
     public JobHistory endDate(Instant endDate) {
-        this.setEndDate(endDate);
+        this.endDate = endDate;
         return this;
     }
 
@@ -99,7 +97,7 @@ public class JobHistory implements Serializable {
     }
 
     public JobHistory salary(Long salary) {
-        this.setSalary(salary);
+        this.salary = salary;
         return this;
     }
 
@@ -111,42 +109,15 @@ public class JobHistory implements Serializable {
         return this.employee;
     }
 
+    public JobHistory employee(Employee employee) {
+        this.setEmployee(employee);
+        this.employeeId = employee != null ? employee.getId() : null;
+        return this;
+    }
+
     public void setEmployee(Employee employee) {
         this.employee = employee;
         this.employeeId = employee != null ? employee.getId() : null;
-    }
-
-    public JobHistory employee(Employee employee) {
-        this.setEmployee(employee);
-        return this;
-    }
-
-    public Job getJob() {
-        return this.job;
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
-        this.jobId = job != null ? job.getId() : null;
-    }
-
-    public JobHistory job(Job job) {
-        this.setJob(job);
-        return this;
-    }
-
-    public Department getDepartment() {
-        return this.department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-        this.departmentId = department != null ? department.getId() : null;
-    }
-
-    public JobHistory department(Department department) {
-        this.setDepartment(department);
-        return this;
     }
 
     public Long getEmployeeId() {
@@ -157,12 +128,42 @@ public class JobHistory implements Serializable {
         this.employeeId = employee;
     }
 
+    public Job getJob() {
+        return this.job;
+    }
+
+    public JobHistory job(Job job) {
+        this.setJob(job);
+        this.jobId = job != null ? job.getId() : null;
+        return this;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+        this.jobId = job != null ? job.getId() : null;
+    }
+
     public Long getJobId() {
         return this.jobId;
     }
 
     public void setJobId(Long job) {
         this.jobId = job;
+    }
+
+    public Department getDepartment() {
+        return this.department;
+    }
+
+    public JobHistory department(Department department) {
+        this.setDepartment(department);
+        this.departmentId = department != null ? department.getId() : null;
+        return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+        this.departmentId = department != null ? department.getId() : null;
     }
 
     public Long getDepartmentId() {

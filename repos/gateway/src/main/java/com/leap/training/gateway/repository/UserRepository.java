@@ -94,17 +94,16 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
 
     @Override
     public Flux<User> findAllWithAuthorities(Pageable pageable) {
-        String property = pageable.getSort().stream().map(Sort.Order::getProperty).findFirst().orElse("id");
-        String direction = String.valueOf(
-            pageable.getSort().stream().map(Sort.Order::getDirection).findFirst().orElse(Sort.DEFAULT_DIRECTION)
-        );
+        String property = pageable.getSort().stream().map(Sort.Order::getProperty).findFirst().get();
+        String direction = String.valueOf(pageable.getSort().stream().map(Sort.Order::getDirection).findFirst().get());
         long page = pageable.getPageNumber();
         long size = pageable.getPageSize();
 
         return db
             .sql("SELECT * FROM jhi_user u LEFT JOIN jhi_user_authority ua ON u.id=ua.user_id")
-            .map((row, metadata) ->
-                Tuples.of(r2dbcConverter.read(User.class, row, metadata), Optional.ofNullable(row.get("authority_name", String.class)))
+            .map(
+                (row, metadata) ->
+                    Tuples.of(r2dbcConverter.read(User.class, row, metadata), Optional.ofNullable(row.get("authority_name", String.class)))
             )
             .all()
             .groupBy(t -> t.getT1().getLogin())
@@ -131,8 +130,9 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
         return db
             .sql("SELECT * FROM jhi_user u LEFT JOIN jhi_user_authority ua ON u.id=ua.user_id WHERE u." + fieldName + " = :" + fieldName)
             .bind(fieldName, fieldValue)
-            .map((row, metadata) ->
-                Tuples.of(r2dbcConverter.read(User.class, row, metadata), Optional.ofNullable(row.get("authority_name", String.class)))
+            .map(
+                (row, metadata) ->
+                    Tuples.of(r2dbcConverter.read(User.class, row, metadata), Optional.ofNullable(row.get("authority_name", String.class)))
             )
             .all()
             .collectList()
@@ -145,11 +145,13 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
             tuples
                 .stream()
                 .filter(t -> t.getT2().isPresent())
-                .map(t -> {
-                    Authority authority = new Authority();
-                    authority.setName(t.getT2().get());
-                    return authority;
-                })
+                .map(
+                    t -> {
+                        Authority authority = new Authority();
+                        authority.setName(t.getT2().get());
+                        return authority;
+                    }
+                )
                 .collect(Collectors.toSet())
         );
 

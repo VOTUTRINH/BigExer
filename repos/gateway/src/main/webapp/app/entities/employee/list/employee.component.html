@@ -31,7 +31,7 @@
   <div class="table-responsive" id="entities" *ngIf="employees && employees.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
           <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="firstName">
             <span jhiTranslate="gatewayApp.employee.firstName">First Name</span> <fa-icon icon="sort"></fa-icon>
@@ -116,12 +116,20 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
 
-
-              <button type="submit" [routerLink]="['/employee', 'document',employee.id]" class="btn btn-success btn-sm" data-cy="entityDocumentButton">
+              <!-- <button type="submit" [routerLink]="['/employee',employee.id, 'edocument']" class="btn btn-success btn-sm" data-cy="entityDocumentButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" >Document</span>
+              </button> -->
+
+              <button
+                type="submit"
+                [routerLink]="['/employee', employee.id, 'edocument']"
+                class="btn btn-success btn-sm"
+                data-cy="entityDocumentButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">Document</span>
               </button>
-              
             </div>
           </td>
         </tr>

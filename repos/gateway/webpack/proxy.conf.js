@@ -1,4 +1,5 @@
-function setupProxy({ tls }) {
+function setupProxy() {
+  const tls = process.env.TLS;
   const conf = [
     {
       context: [
@@ -20,4 +21,4 @@ function setupProxy({ tls }) {
   return conf;
 }
 
-module.exports = setupProxy;
+module.exports = setupProxy();

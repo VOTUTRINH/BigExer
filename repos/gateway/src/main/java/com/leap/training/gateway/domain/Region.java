@@ -18,7 +18,6 @@ public class Region implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("region_name")
@@ -29,18 +28,17 @@ public class Region implements Serializable {
     private Set<Country> countries = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Region id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Region id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getRegionName() {
@@ -48,7 +46,7 @@ public class Region implements Serializable {
     }
 
     public Region regionName(String regionName) {
-        this.setRegionName(regionName);
+        this.regionName = regionName;
         return this;
     }
 
@@ -58,16 +56,6 @@ public class Region implements Serializable {
 
     public Set<Country> getCountries() {
         return this.countries;
-    }
-
-    public void setCountries(Set<Country> countries) {
-        if (this.countries != null) {
-            this.countries.forEach(i -> i.setRegion(null));
-        }
-        if (countries != null) {
-            countries.forEach(i -> i.setRegion(this));
-        }
-        this.countries = countries;
     }
 
     public Region countries(Set<Country> countries) {
@@ -85,6 +73,16 @@ public class Region implements Serializable {
         this.countries.remove(country);
         country.setRegion(null);
         return this;
+    }
+
+    public void setCountries(Set<Country> countries) {
+        if (this.countries != null) {
+            this.countries.forEach(i -> i.setRegion(null));
+        }
+        if (countries != null) {
+            countries.forEach(i -> i.setRegion(this));
+        }
+        this.countries = countries;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const path = require('path');
-const { hashElement } = require('folder-hash');
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -10,15 +9,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 const environment = require('./environment');
-const proxyConfig = require('./proxy.conf');
 
-module.exports = async (config, options, targetOptions) => {
-  const languagesHash = await hashElement(path.resolve(__dirname, '../src/main/webapp/i18n'), {
-    algo: 'md5',
-    encoding: 'hex',
-    files: { include: ['*.json'] },
-  });
+const tls = process.env.TLS;
 
+module.exports = (config, options, targetOptions) => {
   config.cache = {
     // 1. Set cache type to filesystem
     type: 'filesystem',
@@ -47,13 +41,6 @@ module.exports = async (config, options, targetOptions) => {
       })
     );
   }
-
-  // configuring proxy for back end service
-  const tls = Boolean(config.devServer && config.devServer.https);
-  if (config.devServer) {
-    config.devServer.proxy = proxyConfig({ tls });
-  }
-
   if (targetOptions.target === 'serve' || config.watch) {
     config.plugins.push(
       new BrowserSyncPlugin(
@@ -109,7 +96,7 @@ module.exports = async (config, options, targetOptions) => {
 
   config.plugins.push(
     new webpack.DefinePlugin({
-      I18N_HASH: JSON.stringify(languagesHash.hash),
+      __TIMESTAMP__: JSON.stringify(environment.__TIMESTAMP__),
       // APP_VERSION is passed as an environment variable from the Gradle / Maven build tasks.
       __VERSION__: JSON.stringify(environment.__VERSION__),
       __DEBUG_INFO_ENABLED__: environment.__DEBUG_INFO_ENABLED__ || config.mode === 'development',
@@ -117,7 +104,7 @@ module.exports = async (config, options, targetOptions) => {
       // If this URL is left empty (""), then it will be relative to the current context.
       // If you use an API server, in `prod` mode, you will need to enable CORS
       // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
-      SERVER_API_URL: JSON.stringify(environment.SERVER_API_URL),
+      __SERVER_API_URL__: JSON.stringify(environment.__SERVER_API_URL__),
     }),
     new MergeJsonWebpackPlugin({
       output: {

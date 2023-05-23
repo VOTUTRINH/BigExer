@@ -41,9 +41,9 @@ export class MainComponent implements OnInit {
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
-    const title: string = routeSnapshot.data['pageTitle'] ?? '';
+    let title: string = routeSnapshot.data['pageTitle'] ?? '';
     if (routeSnapshot.firstChild) {
-      return this.getPageTitle(routeSnapshot.firstChild) || title;
+      title = this.getPageTitle(routeSnapshot.firstChild) || title;
     }
     return title;
   }

@@ -19,7 +19,6 @@ public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("first_name")
@@ -58,43 +57,42 @@ public class Employee implements Serializable {
     @JsonIgnoreProperties(value = { "employees", "jobHistories", "manager", "location" }, allowSetters = true)
     private Set<Department> managedDepartments = new HashSet<>();
 
-    @Transient
     @JsonIgnoreProperties(value = { "employees", "jobHistories" }, allowSetters = true)
+    @Transient
     private Job job;
-
-    @Transient
-    @JsonIgnoreProperties(
-        value = { "subEmployees", "jobHistories", "managedDepartments", "job", "manager", "department" },
-        allowSetters = true
-    )
-    private Employee manager;
-
-    @Transient
-    @JsonIgnoreProperties(value = { "employees", "jobHistories", "manager", "location" }, allowSetters = true)
-    private Department department;
 
     @Column("job_id")
     private Long jobId;
 
+    @JsonIgnoreProperties(
+        value = { "subEmployees", "jobHistories", "managedDepartments", "job", "manager", "department" },
+        allowSetters = true
+    )
+    @Transient
+    private Employee manager;
+
     @Column("manager_id")
     private Long managerId;
+
+    @JsonIgnoreProperties(value = { "employees", "jobHistories", "manager", "location" }, allowSetters = true)
+    @Transient
+    private Department department;
 
     @Column("department_id")
     private Long departmentId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Employee id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Employee id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getFirstName() {
@@ -102,7 +100,7 @@ public class Employee implements Serializable {
     }
 
     public Employee firstName(String firstName) {
-        this.setFirstName(firstName);
+        this.firstName = firstName;
         return this;
     }
 
@@ -115,7 +113,7 @@ public class Employee implements Serializable {
     }
 
     public Employee lastName(String lastName) {
-        this.setLastName(lastName);
+        this.lastName = lastName;
         return this;
     }
 
@@ -128,7 +126,7 @@ public class Employee implements Serializable {
     }
 
     public Employee email(String email) {
-        this.setEmail(email);
+        this.email = email;
         return this;
     }
 
@@ -141,7 +139,7 @@ public class Employee implements Serializable {
     }
 
     public Employee phoneNumber(String phoneNumber) {
-        this.setPhoneNumber(phoneNumber);
+        this.phoneNumber = phoneNumber;
         return this;
     }
 
@@ -154,7 +152,7 @@ public class Employee implements Serializable {
     }
 
     public Employee hireDate(Instant hireDate) {
-        this.setHireDate(hireDate);
+        this.hireDate = hireDate;
         return this;
     }
 
@@ -167,7 +165,7 @@ public class Employee implements Serializable {
     }
 
     public Employee salary(Long salary) {
-        this.setSalary(salary);
+        this.salary = salary;
         return this;
     }
 
@@ -180,7 +178,7 @@ public class Employee implements Serializable {
     }
 
     public Employee commissionPct(Long commissionPct) {
-        this.setCommissionPct(commissionPct);
+        this.commissionPct = commissionPct;
         return this;
     }
 
@@ -190,16 +188,6 @@ public class Employee implements Serializable {
 
     public Set<Employee> getSubEmployees() {
         return this.subEmployees;
-    }
-
-    public void setSubEmployees(Set<Employee> employees) {
-        if (this.subEmployees != null) {
-            this.subEmployees.forEach(i -> i.setManager(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setManager(this));
-        }
-        this.subEmployees = employees;
     }
 
     public Employee subEmployees(Set<Employee> employees) {
@@ -219,18 +207,18 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Set<JobHistory> getJobHistories() {
-        return this.jobHistories;
+    public void setSubEmployees(Set<Employee> employees) {
+        if (this.subEmployees != null) {
+            this.subEmployees.forEach(i -> i.setManager(null));
+        }
+        if (employees != null) {
+            employees.forEach(i -> i.setManager(this));
+        }
+        this.subEmployees = employees;
     }
 
-    public void setJobHistories(Set<JobHistory> jobHistories) {
-        if (this.jobHistories != null) {
-            this.jobHistories.forEach(i -> i.setEmployee(null));
-        }
-        if (jobHistories != null) {
-            jobHistories.forEach(i -> i.setEmployee(this));
-        }
-        this.jobHistories = jobHistories;
+    public Set<JobHistory> getJobHistories() {
+        return this.jobHistories;
     }
 
     public Employee jobHistories(Set<JobHistory> jobHistories) {
@@ -250,18 +238,18 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Set<Department> getManagedDepartments() {
-        return this.managedDepartments;
+    public void setJobHistories(Set<JobHistory> jobHistories) {
+        if (this.jobHistories != null) {
+            this.jobHistories.forEach(i -> i.setEmployee(null));
+        }
+        if (jobHistories != null) {
+            jobHistories.forEach(i -> i.setEmployee(this));
+        }
+        this.jobHistories = jobHistories;
     }
 
-    public void setManagedDepartments(Set<Department> departments) {
-        if (this.managedDepartments != null) {
-            this.managedDepartments.forEach(i -> i.setManager(null));
-        }
-        if (departments != null) {
-            departments.forEach(i -> i.setManager(this));
-        }
-        this.managedDepartments = departments;
+    public Set<Department> getManagedDepartments() {
+        return this.managedDepartments;
     }
 
     public Employee managedDepartments(Set<Department> departments) {
@@ -281,46 +269,29 @@ public class Employee implements Serializable {
         return this;
     }
 
+    public void setManagedDepartments(Set<Department> departments) {
+        if (this.managedDepartments != null) {
+            this.managedDepartments.forEach(i -> i.setManager(null));
+        }
+        if (departments != null) {
+            departments.forEach(i -> i.setManager(this));
+        }
+        this.managedDepartments = departments;
+    }
+
     public Job getJob() {
         return this.job;
+    }
+
+    public Employee job(Job job) {
+        this.setJob(job);
+        this.jobId = job != null ? job.getId() : null;
+        return this;
     }
 
     public void setJob(Job job) {
         this.job = job;
         this.jobId = job != null ? job.getId() : null;
-    }
-
-    public Employee job(Job job) {
-        this.setJob(job);
-        return this;
-    }
-
-    public Employee getManager() {
-        return this.manager;
-    }
-
-    public void setManager(Employee employee) {
-        this.manager = employee;
-        this.managerId = employee != null ? employee.getId() : null;
-    }
-
-    public Employee manager(Employee employee) {
-        this.setManager(employee);
-        return this;
-    }
-
-    public Department getDepartment() {
-        return this.department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-        this.departmentId = department != null ? department.getId() : null;
-    }
-
-    public Employee department(Department department) {
-        this.setDepartment(department);
-        return this;
     }
 
     public Long getJobId() {
@@ -331,12 +302,42 @@ public class Employee implements Serializable {
         this.jobId = job;
     }
 
+    public Employee getManager() {
+        return this.manager;
+    }
+
+    public Employee manager(Employee employee) {
+        this.setManager(employee);
+        this.managerId = employee != null ? employee.getId() : null;
+        return this;
+    }
+
+    public void setManager(Employee employee) {
+        this.manager = employee;
+        this.managerId = employee != null ? employee.getId() : null;
+    }
+
     public Long getManagerId() {
         return this.managerId;
     }
 
     public void setManagerId(Long employee) {
         this.managerId = employee;
+    }
+
+    public Department getDepartment() {
+        return this.department;
+    }
+
+    public Employee department(Department department) {
+        this.setDepartment(department);
+        this.departmentId = department != null ? department.getId() : null;
+        return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+        this.departmentId = department != null ? department.getId() : null;
     }
 
     public Long getDepartmentId() {

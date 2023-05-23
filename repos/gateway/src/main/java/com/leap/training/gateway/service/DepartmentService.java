@@ -47,13 +47,15 @@ public class DepartmentService {
 
         return departmentRepository
             .findById(department.getId())
-            .map(existingDepartment -> {
-                if (department.getDepartmentName() != null) {
-                    existingDepartment.setDepartmentName(department.getDepartmentName());
-                }
+            .map(
+                existingDepartment -> {
+                    if (department.getDepartmentName() != null) {
+                        existingDepartment.setDepartmentName(department.getDepartmentName());
+                    }
 
-                return existingDepartment;
-            })
+                    return existingDepartment;
+                }
+            )
             .flatMap(departmentRepository::save);
     }
 

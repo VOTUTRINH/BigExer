@@ -11,70 +11,72 @@ import { RegionService } from '../service/region.service';
 
 import { RegionRoutingResolveService } from './region-routing-resolve.service';
 
-describe('Region routing resolve service', () => {
-  let mockRouter: Router;
-  let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
-  let routingResolveService: RegionRoutingResolveService;
-  let service: RegionService;
-  let resultRegion: IRegion | undefined;
+describe('Service Tests', () => {
+  describe('Region routing resolve service', () => {
+    let mockRouter: Router;
+    let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+    let routingResolveService: RegionRoutingResolveService;
+    let service: RegionService;
+    let resultRegion: IRegion | undefined;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [Router, ActivatedRouteSnapshot],
-    });
-    mockRouter = TestBed.inject(Router);
-    mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
-    routingResolveService = TestBed.inject(RegionRoutingResolveService);
-    service = TestBed.inject(RegionService);
-    resultRegion = undefined;
-  });
-
-  describe('resolve', () => {
-    it('should return IRegion returned by find', () => {
-      // GIVEN
-      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
-      mockActivatedRouteSnapshot.params = { id: 123 };
-
-      // WHEN
-      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultRegion = result;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [Router, ActivatedRouteSnapshot],
       });
-
-      // THEN
-      expect(service.find).toBeCalledWith(123);
-      expect(resultRegion).toEqual({ id: 123 });
+      mockRouter = TestBed.inject(Router);
+      mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
+      routingResolveService = TestBed.inject(RegionRoutingResolveService);
+      service = TestBed.inject(RegionService);
+      resultRegion = undefined;
     });
 
-    it('should return new IRegion if id is not provided', () => {
-      // GIVEN
-      service.find = jest.fn();
-      mockActivatedRouteSnapshot.params = {};
+    describe('resolve', () => {
+      it('should return IRegion returned by find', () => {
+        // GIVEN
+        service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+        mockActivatedRouteSnapshot.params = { id: 123 };
 
-      // WHEN
-      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultRegion = result;
+        // WHEN
+        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+          resultRegion = result;
+        });
+
+        // THEN
+        expect(service.find).toBeCalledWith(123);
+        expect(resultRegion).toEqual({ id: 123 });
       });
 
-      // THEN
-      expect(service.find).not.toBeCalled();
-      expect(resultRegion).toEqual(new Region());
-    });
+      it('should return new IRegion if id is not provided', () => {
+        // GIVEN
+        service.find = jest.fn();
+        mockActivatedRouteSnapshot.params = {};
 
-    it('should route to 404 page if data not found in server', () => {
-      // GIVEN
-      jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Region })));
-      mockActivatedRouteSnapshot.params = { id: 123 };
+        // WHEN
+        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+          resultRegion = result;
+        });
 
-      // WHEN
-      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultRegion = result;
+        // THEN
+        expect(service.find).not.toBeCalled();
+        expect(resultRegion).toEqual(new Region());
       });
 
-      // THEN
-      expect(service.find).toBeCalledWith(123);
-      expect(resultRegion).toEqual(undefined);
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
+      it('should route to 404 page if data not found in server', () => {
+        // GIVEN
+        jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Region })));
+        mockActivatedRouteSnapshot.params = { id: 123 };
+
+        // WHEN
+        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+          resultRegion = result;
+        });
+
+        // THEN
+        expect(service.find).toBeCalledWith(123);
+        expect(resultRegion).toEqual(undefined);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
+      });
     });
   });
 });

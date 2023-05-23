@@ -16,7 +16,6 @@ public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
     private Long id;
 
     @Column("document_name")
@@ -25,26 +24,25 @@ public class Document implements Serializable {
     @Column("employee_id")
     private Long employeeId;
 
-    @Transient
     @JsonIgnoreProperties(value = { "documents" }, allowSetters = true)
+    @Transient
     private DocumentType documentType;
 
     @Column("document_type_id")
     private Long documentTypeId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Document id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Document id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getDocumentName() {
@@ -52,7 +50,7 @@ public class Document implements Serializable {
     }
 
     public Document documentName(String documentName) {
-        this.setDocumentName(documentName);
+        this.documentName = documentName;
         return this;
     }
 
@@ -65,7 +63,7 @@ public class Document implements Serializable {
     }
 
     public Document employeeId(Long employeeId) {
-        this.setEmployeeId(employeeId);
+        this.employeeId = employeeId;
         return this;
     }
 
@@ -77,14 +75,15 @@ public class Document implements Serializable {
         return this.documentType;
     }
 
+    public Document documentType(DocumentType documentType) {
+        this.setDocumentType(documentType);
+        this.documentTypeId = documentType != null ? documentType.getId() : null;
+        return this;
+    }
+
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
         this.documentTypeId = documentType != null ? documentType.getId() : null;
-    }
-
-    public Document documentType(DocumentType documentType) {
-        this.setDocumentType(documentType);
-        return this;
     }
 
     public Long getDocumentTypeId() {

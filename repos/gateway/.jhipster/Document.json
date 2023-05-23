@@ -28,5 +28,5 @@
   "embedded": false,
   "applications": ["document", "gateway"],
   "databaseType": "sql",
-  "changelogDate": "20230519095128"
+  "changelogDate": "20230522042520"
 }

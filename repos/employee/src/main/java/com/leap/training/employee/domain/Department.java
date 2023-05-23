@@ -21,7 +21,6 @@ public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "department_name")
@@ -52,18 +51,17 @@ public class Department implements Serializable {
     private Location location;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public Department id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Department id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getDepartmentName() {
@@ -71,7 +69,7 @@ public class Department implements Serializable {
     }
 
     public Department departmentName(String departmentName) {
-        this.setDepartmentName(departmentName);
+        this.departmentName = departmentName;
         return this;
     }
 
@@ -81,16 +79,6 @@ public class Department implements Serializable {
 
     public Set<Employee> getEmployees() {
         return this.employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        if (this.employees != null) {
-            this.employees.forEach(i -> i.setDepartment(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setDepartment(this));
-        }
-        this.employees = employees;
     }
 
     public Department employees(Set<Employee> employees) {
@@ -110,18 +98,18 @@ public class Department implements Serializable {
         return this;
     }
 
-    public Set<JobHistory> getJobHistories() {
-        return this.jobHistories;
+    public void setEmployees(Set<Employee> employees) {
+        if (this.employees != null) {
+            this.employees.forEach(i -> i.setDepartment(null));
+        }
+        if (employees != null) {
+            employees.forEach(i -> i.setDepartment(this));
+        }
+        this.employees = employees;
     }
 
-    public void setJobHistories(Set<JobHistory> jobHistories) {
-        if (this.jobHistories != null) {
-            this.jobHistories.forEach(i -> i.setDepartment(null));
-        }
-        if (jobHistories != null) {
-            jobHistories.forEach(i -> i.setDepartment(this));
-        }
-        this.jobHistories = jobHistories;
+    public Set<JobHistory> getJobHistories() {
+        return this.jobHistories;
     }
 
     public Department jobHistories(Set<JobHistory> jobHistories) {
@@ -141,12 +129,18 @@ public class Department implements Serializable {
         return this;
     }
 
-    public Employee getManager() {
-        return this.manager;
+    public void setJobHistories(Set<JobHistory> jobHistories) {
+        if (this.jobHistories != null) {
+            this.jobHistories.forEach(i -> i.setDepartment(null));
+        }
+        if (jobHistories != null) {
+            jobHistories.forEach(i -> i.setDepartment(this));
+        }
+        this.jobHistories = jobHistories;
     }
 
-    public void setManager(Employee employee) {
-        this.manager = employee;
+    public Employee getManager() {
+        return this.manager;
     }
 
     public Department manager(Employee employee) {
@@ -154,17 +148,21 @@ public class Department implements Serializable {
         return this;
     }
 
-    public Location getLocation() {
-        return this.location;
+    public void setManager(Employee employee) {
+        this.manager = employee;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public Location getLocation() {
+        return this.location;
     }
 
     public Department location(Location location) {
         this.setLocation(location);
         return this;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

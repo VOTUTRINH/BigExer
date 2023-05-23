@@ -109,7 +109,7 @@ public class RegionResource {
      * or with status {@code 500 (Internal Server Error)} if the region couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/regions/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/regions/{id}", consumes = "application/merge-patch+json")
     public ResponseEntity<Region> partialUpdateRegion(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Region region

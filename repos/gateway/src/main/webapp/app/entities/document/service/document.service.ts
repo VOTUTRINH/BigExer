@@ -12,7 +12,7 @@ export type EntityArrayResponseType = HttpResponse<IDocument[]>;
 
 @Injectable({ providedIn: 'root' })
 export class DocumentService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/documents','document');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/documents', 'document');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -32,6 +32,11 @@ export class DocumentService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IDocument>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByIdEmployee(id: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IDocument[]>(`${this.resourceUrl}/edocument/${id}`, { params: options, observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

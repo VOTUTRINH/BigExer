@@ -20,12 +20,10 @@
     "skipClient": true,
     "testFrameworks": [],
     "websocket": false,
-    "enableGradleEnterprise": false,
-    "gradleEnterpriseHost": "",
     "applicationType": "microservice",
     "packageName": "com.leap.training.employee",
     "packageFolder": "com/leap/training/employee",
-    "jhipsterVersion": "7.3.0",
+    "jhipsterVersion": "7.1.0",
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
     "entitySuffix": "",
@@ -42,9 +40,9 @@
     "clientThemeVariant": "",
     "withAdminUi": false,
     "nativeLanguage": "en",
-    "creationTimestamp": 1684489468438,
-    "jwtSecretKey": "MGY2YmU2MjRiN2MxZGEyODcwZTg2MTU0NmRhMDljMDk2NDRhYjMzMTc5ODdlZTEzMDY1ZTA5OWYwMDNiYWFlZWRiMjVkNzM0OTBmOTBmMDBjMWIyMTQzOTBhNzVmZmExYzFkMTk1ZWM4MWY4MDcyZmZkMmU0MTU0ZDVkMjM0M2M=",
-    "entities": ["Location", "Country", "Region", "Job", "JobHistory", "Employee", "Department"],
-    "lastLiquibaseTimestamp": 1684489888000
+    "creationTimestamp": 1684729340275,
+    "jwtSecretKey": "MGIwMTQ4YzYwZGE3YjM4NTA2Y2U5ZjAyMzhiMDU4NmVmYzkyODE4MGZlMzM1YzY2NDJjYWEyNjRmNzljNmQzNDBhNjcwMjM2Y2FlNWEwMGQ3Yzk2YTdiMzE4NmMyOGZiMGU3NjQ3NDMzY2FjODQ3M2FlMmU2NGQzZTA2NGNjNGM=",
+    "entities": ["Country", "Department", "Employee", "Job", "JobHistory", "Location", "Region"],
+    "lastLiquibaseTimestamp": 1684729760000
   }
 }

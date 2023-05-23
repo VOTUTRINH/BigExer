@@ -21,7 +21,6 @@ public class DocumentType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "description")
@@ -33,18 +32,17 @@ public class DocumentType implements Serializable {
     private Set<Document> documents = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
-        return this.id;
-    }
-
-    public DocumentType id(Long id) {
-        this.setId(id);
-        return this;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public DocumentType id(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getDescription() {
@@ -52,7 +50,7 @@ public class DocumentType implements Serializable {
     }
 
     public DocumentType description(String description) {
-        this.setDescription(description);
+        this.description = description;
         return this;
     }
 
@@ -62,16 +60,6 @@ public class DocumentType implements Serializable {
 
     public Set<Document> getDocuments() {
         return this.documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        if (this.documents != null) {
-            this.documents.forEach(i -> i.setDocumentType(null));
-        }
-        if (documents != null) {
-            documents.forEach(i -> i.setDocumentType(this));
-        }
-        this.documents = documents;
     }
 
     public DocumentType documents(Set<Document> documents) {
@@ -89,6 +77,16 @@ public class DocumentType implements Serializable {
         this.documents.remove(document);
         document.setDocumentType(null);
         return this;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        if (this.documents != null) {
+            this.documents.forEach(i -> i.setDocumentType(null));
+        }
+        if (documents != null) {
+            documents.forEach(i -> i.setDocumentType(this));
+        }
+        this.documents = documents;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
