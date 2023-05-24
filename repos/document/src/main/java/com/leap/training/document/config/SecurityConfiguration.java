@@ -2,6 +2,9 @@ package com.leap.training.document.config;
 
 import com.leap.training.document.security.*;
 import com.leap.training.document.security.jwt.*;
+
+import javax.ws.rs.POST;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -72,6 +75,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/documents/edocument/**").permitAll()
+
         .and()
             .apply(securityConfigurerAdapter());
         // @formatter:on
