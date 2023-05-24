@@ -2,6 +2,7 @@ package com.leap.training.document.web.rest;
 
 import com.leap.training.document.domain.Document;
 import com.leap.training.document.repository.DocumentRepository;
+import com.leap.training.document.security.AuthoritiesConstants;
 import com.leap.training.document.service.DocumentService;
 import com.leap.training.document.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -54,6 +57,7 @@ public class DocumentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/documents")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Document> createDocument(@RequestBody Document document) throws URISyntaxException {
         log.debug("REST request to save Document : {}", document);
         if (document.getId() != null) {
@@ -77,6 +81,7 @@ public class DocumentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/documents/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Document> updateDocument(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Document document
@@ -179,6 +184,7 @@ public class DocumentResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/documents/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
         log.debug("REST request to delete Document : {}", id);
         documentService.delete(id);

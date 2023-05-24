@@ -32,6 +32,7 @@ const documentRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
+
   {
     path: ':id/edit',
     component: DocumentUpdateComponent,

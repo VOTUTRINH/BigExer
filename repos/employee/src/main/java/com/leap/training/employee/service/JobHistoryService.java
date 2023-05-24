@@ -36,6 +36,12 @@ public class JobHistoryService {
         return jobHistoryRepository.save(jobHistory);
     }
 
+    public JobHistory saveTest(JobHistory jobHistory) throws Exception {
+        log.debug("Request to save JobHistory : {}", jobHistory);
+
+        throw new Exception("asdasdasd");
+    }
+
     /**
      * Partially update a jobHistory.
      *
